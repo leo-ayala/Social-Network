@@ -13,13 +13,14 @@ const UserSchema = new Schema(
             required: true,
             unique: true,
             match: /.+\@.+\..+/
-        },
-        thoughts: {
-
-        },
-        friends: {
-
         }
+        // },
+        // thoughts: {
+
+        // },
+        // friends: {
+
+        // }
     },
     {
         toJSON: {
@@ -30,9 +31,9 @@ const UserSchema = new Schema(
     }
 );
 
-UserSchema.virtual('friendCount').get(function() {
-    return this.friends.length;
-  });
+// UserSchema.virtual('friendCount').get(function() {
+//     return this.friends.length;
+//   });
 
-const User = model('User', Userschema);
+const User = model('User', UserSchema);
 module.exports = User;
