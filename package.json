@@ -1,0 +1,27 @@
+{
+  "name": "social-network",
+  "version": "1.0.0",
+  "description": "An API designed with Mongo and Mongoose",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leo-ayala/Social-Network.git"
+  },
+  "author": "Leo Ayala",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.29.0",
+    "mongoose": "^5.10.7",
+    "node": "^14.13.0"
+  },
+  "bugs": {
+    "url": "https://github.com/leo-ayala/Social-Network/issues"
+  },
+  "homepage": "https://github.com/leo-ayala/Social-Network#readme"
+}
