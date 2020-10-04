@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 const UserSchema = new Schema(
     {
@@ -13,14 +13,19 @@ const UserSchema = new Schema(
             required: true,
             unique: true,
             match: /.+\@.+\..+/
-        }
-        // },
-        // thoughts: {
-
-        // },
-        // friends: {
-
-        // }
+         },
+        thoughts: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: 'thought'
+            }
+          ],
+          friends: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: 'Users'
+            }
+          ],
     },
     {
         toJSON: {
@@ -31,9 +36,9 @@ const UserSchema = new Schema(
     }
 );
 
-// UserSchema.virtual('friendCount').get(function() {
-//     return this.friends.length;
-//   });
+UserSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
+  });
 
 const User = model('User', UserSchema);
 module.exports = User;

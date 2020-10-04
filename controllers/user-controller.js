@@ -5,7 +5,7 @@ const userController = {
 getAllUsers(req, res) {
     User.find({})
     .populate({
-      path: 'thoughts',
+      path: 'thought',
       select: '-__v'
     })
     .select('-__v')
@@ -16,7 +16,7 @@ getAllUsers(req, res) {
         res.status(400).json(err);
       });
     },
-    
+
 // createUser
 createUser({ body }, res) {
     User.create(body)

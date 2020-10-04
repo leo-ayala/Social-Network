@@ -1,9 +1,8 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const moment = require('moment');
 
-const ReactionsSchema = new Schema(
+const reactionsSchema = new Schema(
     {
-        // set custom id to avoid confusion with parent comment _id
         reactionId: {
             type: Schema.Types.ObjectId,
             default: () => new Types.ObjectId()
@@ -30,7 +29,7 @@ const ReactionsSchema = new Schema(
     }
 );
 
-const ThoughtSchema = new Schema(
+const thoughtSchema = new Schema(
     {
         thoughtText: {
             type: String,
@@ -38,17 +37,18 @@ const ThoughtSchema = new Schema(
             minlength: 1,
             maxlength: 280
         },
+        userName: {
+            type: String,
+            required: true
+        },
         createdAt: {
             type: Date,
             default: Date.now,
             get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
         },
-        username: {
-            type: String,
-            required: true
-        },
-        // uses ReactionsSchema to validate data for a reply
-        reactions: [ReactionsSchema]
+
+        // uses reactionsSchema to validate data for a reply
+        reactions: [reactionsSchema]
     },
     {
         toJSON: {
@@ -59,10 +59,10 @@ const ThoughtSchema = new Schema(
     }
 );
 
-ThoughtSchema.virtual('ReactionCount').get(function () {
+thoughtSchema.virtual('ReactionCount').get(function () {
     return this.reactions.length;
 });
 
-const Thought = model('Thought', ThoughtSchema);
+const thought = model('Thought', thoughtSchema);
 
-module.exports = Thought;
+module.exports = thought;
