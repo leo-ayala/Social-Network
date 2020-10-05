@@ -46,7 +46,6 @@ const thoughtSchema = new Schema(
             default: Date.now,
             get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
         },
-
         // uses reactionsSchema to validate data for a reply
         reactions: [reactionsSchema]
     },

@@ -22,6 +22,24 @@ const thoughtController = {
       .catch(err => res.json(err));
   },
 
+  // get one thought by id
+getthoughtById({ params }, res) {
+    thought.findOne({ _id: params.thoughtId })
+    .select('-__v')
+      .then(dbthoughtData => {
+        // If no thought is found, send 404
+        if (!dbthoughtData) {
+          res.status(404).json({ message: 'No thought found with this id!' });
+          return;
+        }
+        res.json(dbthoughtData);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(400).json(err);
+      });
+  },
+
 // remove thought
   removeThought({ params }, res) {
     thought.findOneAndDelete({ _id: params.thoughtId })
@@ -33,7 +51,7 @@ const thoughtController = {
         return thought.findOneAndUpdate(
           { _id: deletedThought.userId },
           { $pull: { thoughts: deletedThought._id } },
-          { new: true }
+          { new: false }
         );
       })
       .then(dbUserData => {
@@ -48,10 +66,10 @@ const thoughtController = {
 
   // update thought by id
 updateThought({ params, body }, res) {
-    User.findOneAndUpdate(
+    thought.findOneAndUpdate(
         {_id: params.thoughtId },
         body,
-        { new: true }
+        { new: false }
         )
       .then(dbThoughtData => {
         console.log({dbThoughtData})
@@ -74,6 +92,33 @@ updateThought({ params, body }, res) {
         res.status(400).json(err);
       });
   },
+
+  addReaction({ params, body }, res) {
+    thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $push: { reactions: body } },
+      { new: true, runValidators: true }
+    )
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No User found with this id!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch(err => res.json(err));
+  },
+
+  // remove Reaction
+  removeReaction({ params }, res) {
+    thought.findOneAndUpdate(
+      { _id: params.thoughtId },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { new: true }
+    )
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => res.json(err));
+  }
 }
 
 module.exports = thoughtController;
