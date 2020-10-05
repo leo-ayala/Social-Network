@@ -72,7 +72,7 @@ updateThought({ params, body }, res) {
         { new: false }
         )
       .then(dbThoughtData => {
-        console.log({dbThoughtData})
+        // console.log({dbThoughtData})
         if (!dbThoughtData) {
           res.status(404).json({ message: 'No User found with this id!' });
           return;
@@ -96,9 +96,10 @@ updateThought({ params, body }, res) {
   addReaction({ params, body }, res) {
     thought.findOneAndUpdate(
       { _id: params.thoughtId },
-      { $push: { reactions: body } },
-      { new: true, runValidators: true }
-    )
+      { $addToSet: { reactions: body.reactionId } },
+          console.log(body),
+      { new: false, runValidators: true }
+    ) 
       .then(dbUserData => {
         if (!dbUserData) {
           res.status(404).json({ message: 'No User found with this id!' });
